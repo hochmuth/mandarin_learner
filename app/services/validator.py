@@ -23,3 +23,16 @@ def validate_characters_verbose(text: str, allowed_chars: list[str]):
                 invalid_chars.add(char)
 
     return len(invalid_chars) == 0, invalid_chars
+
+def validate_sentences(sentences, allowed_chars: list[str]):
+    allowed_set = set(allowed_chars)
+    invalid_chars = set()
+
+    for sentence in sentences:
+        for char in sentence["chinese"]:
+            # This range defines valid Chinese characters
+            if "\u4e00" <= char <= "\u9fff":
+                if char not in allowed_set:
+                    invalid_chars.add(char)
+
+    return len(invalid_chars) == 0, invalid_chars
