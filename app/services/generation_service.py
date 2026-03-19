@@ -42,7 +42,7 @@ Example format:
 
     return prompt
 
-def generate_sentences(req: GenerationRequest):
+def generate_sentences(characters: list[str], n_sentences: int):
 
     max_attempts = 3
     last_invalid_chars = []
@@ -53,8 +53,8 @@ def generate_sentences(req: GenerationRequest):
         strict = attempt > 0
 
         prompt = build_prompt(
-            req.characters,
-            req.n_sentences,
+            characters,
+            n_sentences,
             strict=strict,
             invalid_chars=last_invalid_chars
         )
@@ -75,7 +75,7 @@ def generate_sentences(req: GenerationRequest):
             continue
 
         # Step 2: Validate characters
-        valid, invalid_chars = validate_sentences(parsed, req.characters)
+        valid, invalid_chars = validate_sentences(parsed, characters)
 
         if valid:
             return {
