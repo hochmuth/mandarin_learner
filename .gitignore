@@ -1,9 +1,12 @@
-# --- Environment files ---
+# environment files
 .env
 .env.*
 
 # virtualenvs
 .venv/
+
+# database
+mandarin.db
 
 __pycache__/
 
