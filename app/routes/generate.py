@@ -8,18 +8,38 @@ from app.services.generation_service import generate_sentences
 
 router = APIRouter()
 
+
 @router.post("/generate")
 def generate(
     req: GenerationRequest,
     session: Session = Depends(get_session)
 ):
     # Step 1: fetch characters from DB
-    characters = get_characters_by_ids(session, req.character_ids)
+    db_characters = get_characters_by_ids(session, req.character_ids)
 
-    # Step 2: call generation service
+    if not db_characters:
+        return {"error": "No valid characters found"}
+
+    # Extract just the Chinese characters for generation
+    character_list = [c.character for c in db_characters]
+
+    # Step 2: generate sentences
     result = generate_sentences(
-        characters=characters,
+        characters=character_list,
         n_sentences=req.n_sentences
     )
 
-    return result
+    # Step 3: attach metadata
+    return {
+        **result,
+        "characters": [
+            {
+                "id": c.id,
+                "character": c.character,
+                "pinyin": c.pinyin,
+                "meaning": c.meaning,
+                "level": c.level
+            }
+            for c in db_characters
+        ]
+    }
