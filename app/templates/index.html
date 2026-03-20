@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mandarin Learning App</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body>
+
+<h1>Mandarin Sentence Generator</h1>
+
+<form 
+    hx-post="/generate-ui" 
+    hx-target="#result" 
+    hx-swap="innerHTML"
+>
+    <h3>Select Characters:</h3>
+
+    <div>
+        {% for char in characters %}
+            <label>
+                <input type="checkbox" name="character_ids" value="{{ char.id }}">
+                {{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}
+            </label><br>
+        {% endfor %}
+    </div>
+
+    <br>
+
+    <label>
+        Number of sentences:
+        <input type="number" name="n_sentences" value="2" min="1" max="5">
+    </label>
+
+    <br><br>
+
+    <button type="submit">Generate</button>
+</form>
+
+<hr>
+
+<div id="result"></div>
+
+</body>
+</html>
