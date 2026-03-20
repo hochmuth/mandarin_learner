@@ -15,7 +15,14 @@
 >
     <h3>Select Characters:</h3>
 
-    <div>
+    <!-- Select / Deselect Buttons -->
+    <button type="button" onclick="selectAll()">Select All</button>
+    <button type="button" onclick="deselectAll()">Deselect All</button>
+
+    <br><br>
+
+    <!-- Character List -->
+    <div id="character-list">
         {% for char in characters %}
             <label>
                 <input type="checkbox" name="character_ids" value="{{ char.id }}">
@@ -26,6 +33,7 @@
 
     <br>
 
+    <!-- Sentence Count -->
     <label>
         Number of sentences:
         <input type="number" name="n_sentences" value="2" min="1" max="5">
@@ -38,7 +46,21 @@
 
 <hr>
 
+<!-- Result Area -->
 <div id="result"></div>
+
+<!-- JavaScript -->
+<script>
+function selectAll() {
+    document.querySelectorAll('#character-list input[type="checkbox"]')
+        .forEach(cb => cb.checked = true);
+}
+
+function deselectAll() {
+    document.querySelectorAll('#character-list input[type="checkbox"]')
+        .forEach(cb => cb.checked = false);
+}
+</script>
 
 </body>
 </html>
