@@ -1,6 +1,7 @@
 import json
 import os
 from openai import OpenAI
+from app.config import GENERATION_MAX_ATTEMPTS, GENERATION_MODEL
 from app.services.validator import validate_sentences
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -55,12 +56,11 @@ def generate_sentences(
         characters_optional: list[str],
         n_sentences: int):
 
-    max_attempts = 3
     last_invalid_chars = []
     last_output = None
     allowed_characters = characters_required + characters_optional
 
-    for attempt in range(max_attempts):
+    for attempt in range(GENERATION_MAX_ATTEMPTS):
 
         strict = attempt > 0
 
@@ -73,7 +73,7 @@ def generate_sentences(
         )
 
         response = client.responses.create(
-            model="gpt-5",
+            model=GENERATION_MODEL,
             input=prompt
         )
 
@@ -101,7 +101,7 @@ def generate_sentences(
 
     return {
         "valid": False,
-        "attempts": max_attempts,
+        "attempts": GENERATION_MAX_ATTEMPTS,
         "invalid_characters": last_invalid_chars,
         "raw_output": last_output
     }

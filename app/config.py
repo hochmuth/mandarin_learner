@@ -1,0 +1,5 @@
+import os
+
+
+GENERATION_MODEL = os.getenv("GENERATION_MODEL", "gpt-5")
+GENERATION_MAX_ATTEMPTS = int(os.getenv("GENERATION_MAX_ATTEMPTS", "3"))
