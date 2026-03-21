@@ -20,12 +20,22 @@ def generate(
     if not db_characters:
         return {"error": "No valid characters found"}
 
-    # Extract just the Chinese characters for generation
-    character_list = [c.character for c in db_characters]
+    required_characters = [
+        c.character for c in db_characters if c.status == "new"
+    ]
+    optional_characters = [
+        c.character for c in db_characters if c.status == "known"
+    ]
+
+    # Fallback to the original behavior when only known characters are selected.
+    if not required_characters:
+        required_characters = [c.character for c in db_characters]
+        optional_characters = []
 
     # Step 2: generate sentences
     result = generate_sentences(
-        characters=character_list,
+        characters_required=required_characters,
+        characters_optional=optional_characters,
         n_sentences=req.n_sentences
     )
 
@@ -38,7 +48,8 @@ def generate(
                 "character": c.character,
                 "pinyin": c.pinyin,
                 "meaning": c.meaning,
-                "level": c.level
+                "level": c.level,
+                "status": c.status,
             }
             for c in db_characters
         ]

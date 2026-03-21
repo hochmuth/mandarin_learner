@@ -72,7 +72,7 @@
             <div id="known-characters" class="character-list">
                 {% for char in known_characters %}
                     <label>
-                        <input type="checkbox" name="character_ids" value="{{ char.id }}">
+                        <input type="checkbox" name="character_ids" value="{{ char.id }}" checked>
                         {{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}
                     </label>
                 {% endfor %}

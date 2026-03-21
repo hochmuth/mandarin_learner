@@ -40,10 +40,20 @@ def generate_ui(
         select(Character).where(Character.id.in_(character_ids))
     ).all()
 
-    char_list = [c.character for c in characters]
+    required_characters = [
+        c.character for c in characters if c.status == "new"
+    ]
+    optional_characters = [
+        c.character for c in characters if c.status == "known"
+    ]
+
+    if not required_characters:
+        required_characters = [c.character for c in characters]
+        optional_characters = []
 
     result = generate_sentences(
-        characters=char_list,
+        characters_required=required_characters,
+        characters_optional=optional_characters,
         n_sentences=n_sentences
     )
 

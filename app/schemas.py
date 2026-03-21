@@ -14,6 +14,7 @@ class CharacterCreate(BaseModel):
     pinyin: str
     meaning: str
     level: int
+    status: str
 
 class CharacterRead(BaseModel):
     id: int
@@ -21,3 +22,4 @@ class CharacterRead(BaseModel):
     pinyin: str
     meaning: str
     level: int
+    status: str
