@@ -1,8 +1,8 @@
-from fastapi import FastAPI
 from dotenv import load_dotenv
 # We need to load .env before the rest of the imports
 load_dotenv(dotenv_path=".env")
 
+from fastapi import FastAPI
 from app.database import create_db
 from app.routes.ui import router as ui_router
 from app.routes.generate import router as generate_router
