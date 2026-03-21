@@ -8,4 +8,5 @@
 
 
 # DB set up
+uv run python -m app.init_db
 uv run python -m app.seed
