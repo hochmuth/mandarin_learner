@@ -44,12 +44,8 @@
     <h3>Select Characters:</h3>
 
     <!-- Select / Deselect Buttons -->
-    <button type="button" onclick="selectAll()">Select All</button>
-    <button type="button" onclick="deselectAll()">Deselect All</button>
-    <button type="button" onclick="selectGroup('known-characters')">Select All Known</button>
-    <button type="button" onclick="selectGroup('new-characters')">Select All New</button>
-    <button type="button" onclick="deselectGroup('known-characters')">Deselect Known</button>
-    <button type="button" onclick="deselectGroup('new-characters')">Deselect New</button>
+    <button type="button" onclick="toggleGroup('new-characters')">Toggle New</button>
+    <button type="button" onclick="toggleGroup('known-characters')">Toggle Known</button>
 
     <br><br>
 
@@ -100,24 +96,13 @@
 
 <!-- JavaScript -->
 <script>
-function selectAll() {
-    document.querySelectorAll('#character-list input[type="checkbox"]')
-        .forEach(cb => cb.checked = true);
-}
+function toggleGroup(groupId) {
+    const checkboxes = Array.from(
+        document.querySelectorAll(`#${groupId} input[type="checkbox"]`)
+    );
+    const shouldSelect = checkboxes.some(cb => !cb.checked);
 
-function deselectAll() {
-    document.querySelectorAll('#character-list input[type="checkbox"]')
-        .forEach(cb => cb.checked = false);
-}
-
-function selectGroup(groupId) {
-    document.querySelectorAll(`#${groupId} input[type="checkbox"]`)
-        .forEach(cb => cb.checked = true);
-}
-
-function deselectGroup(groupId) {
-    document.querySelectorAll(`#${groupId} input[type="checkbox"]`)
-        .forEach(cb => cb.checked = false);
+    checkboxes.forEach(cb => cb.checked = shouldSelect);
 }
 </script>
 
