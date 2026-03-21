@@ -7,3 +7,4 @@ class Character(SQLModel, table=True):
     pinyin: str
     meaning: str
     level: int
+    status: str
