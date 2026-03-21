@@ -1,7 +1,8 @@
 import json
 import os
-from openai import OpenAI
 from app.config import GENERATION_MAX_ATTEMPTS, GENERATION_MODEL
+from langfuse import observe
+from langfuse.openai import OpenAI
 from app.services.validator import validate_sentences
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -51,6 +52,7 @@ Example format:
 
     return prompt
 
+@observe(name="generate_sentences", as_type="chain")
 def generate_sentences(
         characters_required: list[str],
         characters_optional: list[str],
