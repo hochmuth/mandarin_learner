@@ -6,6 +6,8 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 
 def create_db():
+    from app import models  # Register SQLModel tables before create_all()
+
     SQLModel.metadata.create_all(engine)
 
 
