@@ -1,0 +1,154 @@
+character,pinyin,meaning,level,status
+我,wǒ,I / me,1,known
+你,nǐ,you,1,known
+他,tā,he,1,known
+她,tā,she,1,known
+是,shì,to be,1,known
+不,bù,not,1,known
+有,yǒu,to have,1,known
+这,zhè,this,1,known
+那,nà,that,1,known
+哪,nǎ,which,1,known
+人,rén,person,1,known
+们,men,plural marker,1,known
+中,zhōng,center / middle,1,known
+国,guó,country,1,known
+上,shàng,up / above,1,known
+下,xià,down / below,1,known
+大,dà,big,1,known
+小,xiǎo,small,1,known
+多,duō,many / much,1,known
+少,shǎo,few / little,1,known
+好,hǎo,good,1,known
+很,hěn,very,1,known
+再,zài,again,1,known
+见,jiàn,see,1,known
+天,tiān,day / sky,1,known
+气,qì,air / weather,1,known
+吗,ma,question particle,1,known
+呢,ne,question particle,1,known
+的,de,possessive particle,1,known
+了,le,completed action particle,1,known
+在,zài,at / in / on,1,known
+会,huì,can / able to,1,known
+能,néng,can / able to,1,known
+想,xiǎng,to think / want,1,known
+去,qù,to go,1,known
+来,lái,to come,1,known
+回,huí,to return,1,known
+说,shuō,to speak,1,known
+看,kàn,to look / see,1,known
+听,tīng,to listen,1,known
+读,dú,to read,1,known
+写,xiě,to write,1,known
+吃,chī,to eat,1,known
+喝,hē,to drink,1,known
+买,mǎi,to buy,1,known
+开,kāi,to open / drive,1,known
+坐,zuò,to sit,1,known
+住,zhù,to live,1,known
+叫,jiào,to be called,1,known
+姓,xìng,surname,1,known
+学,xué,to study,1,known
+习,xí,to practice,1,new
+工,gōng,work,1,new
+作,zuò,to do / make,1,new
+老,lǎo,old,1,new
+师,shī,teacher,1,new
+生,shēng,student / life,1,new
+朋,péng,friend,1,new
+友,yǒu,friend,1,new
+家,jiā,home / family,1,new
+爸,bà,dad,1,new
+妈,mā,mom,1,new
+儿,ér,son,1,new
+女,nǚ,female,1,new
+子,zǐ,child,1,new
+手,shǒu,hand,1,new
+机,jī,machine / phone,1,new
+电,diàn,electricity,1,new
+脑,nǎo,brain,1,new
+视,shì,vision,1,new
+影,yǐng,shadow / movie,1,new
+院,yuàn,institution,1,new
+医,yī,medical,1,new
+店,diàn,shop,1,new
+饭,fàn,meal / rice,1,new
+馆,guǎn,restaurant,1,new
+水,shuǐ,water,1,new
+果,guǒ,fruit,1,new
+苹,píng,apple (part),1,new
+书,shū,book,1,new
+桌,zhuō,table,1,new
+椅,yǐ,chair,1,new
+猫,māo,cat,1,new
+狗,gǒu,dog,1,new
+车,chē,car,1,new
+租,zū,to rent,1,new
+钱,qián,money,1,new
+块,kuài,measure word (money),1,new
+元,yuán,yuan (currency),1,new
+点,diǎn,o’clock / point,1,new
+分,fēn,minute,1,new
+现,xiàn,now / present,1,new
+时,shí,time,1,new
+候,hòu,time (in word),1,new
+今,jīn,today (part),1,new
+明,míng,bright / next,1,new
+昨,zuó,yesterday (part),1,new
+午,wǔ,noon,1,new
+月,yuè,month / moon,1,new
+年,nián,year,1,new
+号,hào,number / date,1,new
+星,xīng,star,1,new
+期,qī,period / week,1,new
+岁,suì,years old,1,new
+号,hào,number / date,1,new
+前,qián,before,1,new
+后,hòu,after,1,new
+里,lǐ,inside,1,new
+外,wài,outside,1,new
+左,zuǒ,left,1,new
+右,yòu,right,1,new
+东,dōng,east,1,new
+西,xī,west,1,new
+南,nán,south,1,new
+北,běi,north,1,new
+对,duì,correct / to,1,new
+起,qǐ,begin,1,new
+请,qǐng,please,1,new
+谢,xiè,thanks,1,new
+客,kè,guest,1,new
+欢,huān,happy,1,new
+迎,yíng,welcome,1,new
+没,méi,not (past),1,new
+关,guān,close,1,new
+系,xì,relation,1,new
+事,shì,matter,1,new
+情,qíng,feeling / situation,1,new
+什,shén,what (part),1,new
+么,me,what (suffix),1,new
+怎,zěn,how (part),1,new
+样,yàng,kind / type,1,new
+谁,shuí,who,1,new
+哪,nǎ,which,1,new
+几,jǐ,how many (small),1,new
+二,èr,two,1,new
+三,sān,three,1,new
+四,sì,four,1,new
+五,wǔ,five,1,new
+六,liù,six,1,new
+七,qī,seven,1,new
+八,bā,eight,1,new
+九,jiǔ,nine,1,new
+十,shí,ten,1,new
+零,líng,zero,1,new
+百,bǎi,hundred,1,new
+千,qiān,thousand,1,new
+万,wàn,ten thousand,1,new
+个,gè,measure word,1,new
+本,běn,measure word (books),1,new
+只,zhī,measure word (animals),1,new
+件,jiàn,measure word (items),1,new
+杯,bēi,measure word (cups),1,new
+张,zhāng,measure word (flat),1,new
