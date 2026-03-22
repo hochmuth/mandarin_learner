@@ -1,12 +1,15 @@
 # mandarin_learner
 
 
-# TO DO
-- currently the app only generates from the set of characters I select. This is not correct. It should always use the characters I select, but can also take from the larger set of characters. So we'll need two levels of characters - known (which can be chosen any time by the model) and active (that we need to practice.)
-- We need a db interface where I can use simple sql queries (maybe a notebook)
 
+# Commands
+uv run uvicorn app.main:app --reload
+uv run python eval/get_langfuse_success_rate.py
 
 
 # DB set up
 uv run python -m app.init_db
 uv run python -m app.seed
+uv run python -m app.seed app/data/characters_hsk1.csv
+
+# TO DO
