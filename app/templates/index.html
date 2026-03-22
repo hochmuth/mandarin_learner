@@ -8,6 +8,20 @@
             font-family: sans-serif;
         }
 
+        .form-actions {
+            display: flex;
+            align-items: end;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .form-actions label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
         .character-columns {
             display: grid;
             gap: 24px;
@@ -49,6 +63,15 @@
     hx-target="#result" 
     hx-swap="innerHTML"
 >
+    <div class="form-actions">
+        <label>
+            Number of sentences:
+            <input type="number" name="n_sentences" value="2" min="1" max="5">
+        </label>
+
+        <button type="submit">Generate</button>
+    </div>
+
     <h3>Select Characters:</h3>
 
     <!-- Character List -->
@@ -79,18 +102,6 @@
             </div>
         </section>
     </div>
-
-    <br>
-
-    <!-- Sentence Count -->
-    <label>
-        Number of sentences:
-        <input type="number" name="n_sentences" value="2" min="1" max="5">
-    </label>
-
-    <br><br>
-
-    <button type="submit">Generate</button>
 </form>
 
 <hr>
