@@ -3,7 +3,10 @@ from sqlmodel import Session
 
 from app.schemas import GenerationRequest
 from app.database import get_session
-from app.services.vocabulary_service import get_characters_by_ids
+from app.services.vocabulary_service import (
+    get_characters_by_ids,
+    get_characters_by_status,
+)
 from app.services.generation_service import generate_sentences
 
 router = APIRouter()
@@ -16,6 +19,7 @@ def generate(
 ):
     # Step 1: fetch characters from DB
     db_characters = get_characters_by_ids(session, req.character_ids)
+    known_characters = get_characters_by_status(session, "known")
 
     if not db_characters:
         return {"error": "No valid characters found"}
@@ -23,14 +27,10 @@ def generate(
     required_characters = [
         c.character for c in db_characters if c.status == "new"
     ]
-    optional_characters = [
-        c.character for c in db_characters if c.status == "known"
-    ]
+    optional_characters = [c.character for c in known_characters]
 
-    # Fallback to the original behavior when only known characters are selected.
     if not required_characters:
-        required_characters = [c.character for c in db_characters]
-        optional_characters = []
+        return {"error": "No new characters selected"}
 
     # Step 2: generate sentences
     result = generate_sentences(

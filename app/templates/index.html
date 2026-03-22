@@ -71,14 +71,10 @@
         <section class="character-column">
             <div class="character-column-header">
                 <h4>Known Characters</h4>
-                <button type="button" onclick="toggleGroup('known-characters')">Toggle Known</button>
             </div>
             <div id="known-characters" class="character-list">
                 {% for char in known_characters %}
-                    <label>
-                        <input type="checkbox" name="character_ids" value="{{ char.id }}" checked>
-                        {{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}
-                    </label>
+                    <label>{{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}</label>
                 {% endfor %}
             </div>
         </section>

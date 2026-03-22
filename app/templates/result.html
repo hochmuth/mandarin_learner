@@ -1,4 +1,8 @@
-{% if result.valid %}
+{% if error_message %}
+
+<p style="color:red;">{{ error_message }}</p>
+
+{% elif result.valid %}
 
 <h3>Generated Sentences:</h3>
 

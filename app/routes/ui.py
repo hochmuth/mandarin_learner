@@ -6,6 +6,7 @@ from sqlmodel import Session, select
 
 from app.database import get_session
 from app.models import Character
+from app.services.vocabulary_service import get_characters_by_status
 from app.services.generation_service import generate_sentences
 
 router = APIRouter()
@@ -32,24 +33,41 @@ def index(request: Request, session: Session = Depends(get_session)):
 @router.post("/generate-ui", response_class=HTMLResponse)
 def generate_ui(
     request: Request,
-    character_ids: list[int] = Form(...),
+    character_ids: list[int] | None = Form(None),
     n_sentences: int = Form(2),
     session: Session = Depends(get_session)
 ):
-    characters = session.exec(
+    if not character_ids:
+        return templates.TemplateResponse(
+            "result.html",
+            {
+                "request": request,
+                "result": {"valid": False, "attempts": 0},
+                "characters": [],
+                "error_message": "Select at least one new character.",
+            }
+        )
+
+    selected_new_characters = session.exec(
         select(Character).where(Character.id.in_(character_ids))
     ).all()
+    known_characters = get_characters_by_status(session, "known")
 
     required_characters = [
-        c.character for c in characters if c.status == "new"
+        c.character for c in selected_new_characters if c.status == "new"
     ]
-    optional_characters = [
-        c.character for c in characters if c.status == "known"
-    ]
+    optional_characters = [c.character for c in known_characters]
 
     if not required_characters:
-        required_characters = [c.character for c in characters]
-        optional_characters = []
+        return templates.TemplateResponse(
+            "result.html",
+            {
+                "request": request,
+                "result": {"valid": False, "attempts": 0},
+                "characters": selected_new_characters,
+                "error_message": "Select at least one new character.",
+            }
+        )
 
     result = generate_sentences(
         characters_required=required_characters,
@@ -63,6 +81,6 @@ def generate_ui(
         {
             "request": request,
             "result": result,
-            "characters": characters
+            "characters": selected_new_characters
         }
     )
