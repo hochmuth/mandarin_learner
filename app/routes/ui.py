@@ -18,16 +18,28 @@ templates = Jinja2Templates(directory="app/templates")
 @router.get("/", response_class=HTMLResponse)
 def index(request: Request, session: Session = Depends(get_session)):
     characters = session.exec(select(Character)).all()
-    known_characters = [char for char in characters if char.status == "known"]
     new_characters = [char for char in characters if char.status == "new"]
 
     return templates.TemplateResponse(
         "index.html",
         {
             "request": request,
-            "known_characters": known_characters,
             "new_characters": new_characters,
             "max_selected_characters": MAX_SELECTED_CHARACTERS,
+        }
+    )
+
+
+@router.get("/known-characters", response_class=HTMLResponse)
+def known_characters_page(request: Request, session: Session = Depends(get_session)):
+    characters = session.exec(select(Character)).all()
+    known_characters = [char for char in characters if char.status == "known"]
+
+    return templates.TemplateResponse(
+        "known_characters.html",
+        {
+            "request": request,
+            "known_characters": known_characters,
         }
     )
 

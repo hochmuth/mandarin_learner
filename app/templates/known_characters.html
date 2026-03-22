@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Known Characters</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        .page-actions {
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 14px;
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
+            color: inherit;
+            text-decoration: none;
+            background: #f8fafc;
+        }
+
+        .character-list label {
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-actions">
+    <a class="back-link" href="/">Back to home page</a>
+</div>
+
+<h1>汉子 you already know</h1>
+
+<div class="character-list">
+    {% for char in known_characters %}
+        <label>{{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}</label>
+    {% endfor %}
+</div>
+
+</body>
+</html>
