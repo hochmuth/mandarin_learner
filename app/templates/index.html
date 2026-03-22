@@ -53,6 +53,12 @@
             margin-bottom: 8px;
         }
 
+        .character-list.is-scrollable {
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
         .selection-note {
             margin: 8px 0 0;
             color: #57606a;
@@ -107,7 +113,7 @@
                 <h4>New Characters</h4>
                 <button type="button" onclick="toggleGroup('new-characters')">Toggle New</button>
             </div>
-            <div id="new-characters" class="character-list">
+            <div id="new-characters" class="character-list is-scrollable">
                 {% for char in new_characters %}
                     <label>
                         <input
