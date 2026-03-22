@@ -23,7 +23,15 @@
         }
 
         .character-column h4 {
-            margin-top: 0;
+            margin: 0;
+        }
+
+        .character-column-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
         .character-list label {
@@ -43,16 +51,13 @@
 >
     <h3>Select Characters:</h3>
 
-    <!-- Select / Deselect Buttons -->
-    <button type="button" onclick="toggleGroup('new-characters')">Toggle New</button>
-    <button type="button" onclick="toggleGroup('known-characters')">Toggle Known</button>
-
-    <br><br>
-
     <!-- Character List -->
     <div id="character-list" class="character-columns">
         <section class="character-column">
-            <h4>New Characters</h4>
+            <div class="character-column-header">
+                <h4>New Characters</h4>
+                <button type="button" onclick="toggleGroup('new-characters')">Toggle New</button>
+            </div>
             <div id="new-characters" class="character-list">
                 {% for char in new_characters %}
                     <label>
@@ -64,7 +69,10 @@
         </section>
 
         <section class="character-column">
-            <h4>Known Characters</h4>
+            <div class="character-column-header">
+                <h4>Known Characters</h4>
+                <button type="button" onclick="toggleGroup('known-characters')">Toggle Known</button>
+            </div>
             <div id="known-characters" class="character-list">
                 {% for char in known_characters %}
                     <label>
