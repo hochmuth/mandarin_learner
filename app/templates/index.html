@@ -52,6 +52,16 @@
             display: block;
             margin-bottom: 8px;
         }
+
+        .selection-note {
+            margin: 8px 0 0;
+            color: #57606a;
+            font-size: 0.95rem;
+        }
+
+        .selection-note.is-error {
+            color: #b42318;
+        }
     </style>
 </head>
 <body>
@@ -73,6 +83,9 @@
     </div>
 
     <h3>Select Characters:</h3>
+    <p id="selection-note" class="selection-note">
+        Choose up to {{ max_selected_characters }} new characters.
+    </p>
 
     <!-- Character List -->
     <div id="character-list" class="character-columns">
@@ -84,7 +97,12 @@
             <div id="new-characters" class="character-list">
                 {% for char in new_characters %}
                     <label>
-                        <input type="checkbox" name="character_ids" value="{{ char.id }}">
+                        <input
+                            type="checkbox"
+                            name="character_ids"
+                            value="{{ char.id }}"
+                            data-character-checkbox
+                        >
                         {{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}
                     </label>
                 {% endfor %}
@@ -111,14 +129,51 @@
 
 <!-- JavaScript -->
 <script>
+const maxSelectedCharacters = {{ max_selected_characters }};
+
 function toggleGroup(groupId) {
     const checkboxes = Array.from(
         document.querySelectorAll(`#${groupId} input[type="checkbox"]`)
     );
-    const shouldSelect = checkboxes.some(cb => !cb.checked);
+    const shouldSelect = checkboxes.some(cb => !cb.checked && !cb.disabled);
 
-    checkboxes.forEach(cb => cb.checked = shouldSelect);
+    checkboxes.forEach(cb => {
+        if (shouldSelect && getSelectedCount() >= maxSelectedCharacters) {
+            return;
+        }
+
+        cb.checked = shouldSelect;
+    });
+
+    syncCharacterSelectionState();
 }
+
+function getCharacterCheckboxes() {
+    return Array.from(document.querySelectorAll("[data-character-checkbox]"));
+}
+
+function getSelectedCount() {
+    return getCharacterCheckboxes().filter(cb => cb.checked).length;
+}
+
+function syncCharacterSelectionState() {
+    const selectedCount = getSelectedCount();
+    const selectionNote = document.getElementById("selection-note");
+    const reachedLimit = selectedCount >= maxSelectedCharacters;
+
+    getCharacterCheckboxes().forEach(cb => {
+        cb.disabled = reachedLimit && !cb.checked;
+    });
+
+    selectionNote.textContent = `Selected ${selectedCount} of ${maxSelectedCharacters} new characters.`;
+    selectionNote.classList.toggle("is-error", reachedLimit);
+}
+
+getCharacterCheckboxes().forEach(cb => {
+    cb.addEventListener("change", syncCharacterSelectionState);
+});
+
+syncCharacterSelectionState();
 </script>
 
 </body>

@@ -10,6 +10,7 @@ from app.services.vocabulary_service import (
 from app.services.generation_service import generate_sentences
 
 router = APIRouter()
+MAX_SELECTED_CHARACTERS = 3
 
 
 @router.post("/generate")
@@ -17,6 +18,9 @@ def generate(
     req: GenerationRequest,
     session: Session = Depends(get_session)
 ):
+    if len(req.character_ids) > MAX_SELECTED_CHARACTERS:
+        return {"error": f"Select at most {MAX_SELECTED_CHARACTERS} characters"}
+
     # Step 1: fetch characters from DB
     db_characters = get_characters_by_ids(session, req.character_ids)
     known_characters = get_characters_by_status(session, "known")

@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class GenerationRequest(BaseModel):
-    character_ids: list[int]
+    character_ids: list[int] = Field(min_length=1, max_length=3)
     n_sentences: int = 3
 
 class SentenceResult(BaseModel):

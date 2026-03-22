@@ -10,6 +10,7 @@ from app.services.vocabulary_service import get_characters_by_status
 from app.services.generation_service import generate_sentences
 
 router = APIRouter()
+MAX_SELECTED_CHARACTERS = 3
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -26,6 +27,7 @@ def index(request: Request, session: Session = Depends(get_session)):
             "request": request,
             "known_characters": known_characters,
             "new_characters": new_characters,
+            "max_selected_characters": MAX_SELECTED_CHARACTERS,
         }
     )
 
@@ -45,6 +47,17 @@ def generate_ui(
                 "result": {"valid": False, "attempts": 0},
                 "characters": [],
                 "error_message": "Select at least one new character.",
+            }
+        )
+
+    if len(character_ids) > MAX_SELECTED_CHARACTERS:
+        return templates.TemplateResponse(
+            "result.html",
+            {
+                "request": request,
+                "result": {"valid": False, "attempts": 0},
+                "characters": [],
+                "error_message": f"Select at most {MAX_SELECTED_CHARACTERS} new characters.",
             }
         )
 
