@@ -1,26 +1,34 @@
 {% if error_message %}
-
-<p style="color:red;">{{ error_message }}</p>
+<div class="result-card">
+    <p class="error-message">{{ error_message }}</p>
+    <div class="result-actions">
+        <button type="button" data-select-another>Select another</button>
+    </div>
+</div>
 
 {% elif result.valid %}
-
-<h3>Generated Sentences:</h3>
-
-<ul>
-    {% for s in result.sentences %}
-        <li>
-            <strong>{{ s.chinese }}</strong><br>
-            {{ s.pinyin }}<br>
-            {{ s.english }}
-        </li>
-        <br>
-    {% endfor %}
-</ul>
+<div class="result-card">
+    <h3>Generated Sentences</h3>
+    <ul class="sentence-list">
+        {% for s in result.sentences %}
+            <li>
+                <div class="sentence-chinese">{{ s.chinese }}</div>
+                <div class="sentence-meta">{{ s.pinyin }}</div>
+                <div>{{ s.english }}</div>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="result-actions">
+        <button type="button" data-select-another>Select another</button>
+    </div>
+</div>
 
 {% else %}
-
-<p style="color:red;">Generation failed after {{ result.attempts }} attempts.</p>
+<div class="result-card">
+    <p class="error-message">Generation failed after {{ result.attempts }} attempts.</p>
+    <div class="result-actions">
+        <button type="button" data-select-another>Select another</button>
+    </div>
+</div>
 
 {% endif %}
-
-<button type="button" data-select-another>Select another</button>

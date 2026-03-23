@@ -4,40 +4,162 @@
     <title>Mandarin Learning App</title>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <style>
+        :root {
+            --bg: #ffffff;
+            --panel: #ffffff;
+            --text: #4b5563;
+            --text-strong: #1f2937;
+            --border: #e5e7eb;
+            --border-strong: #d1d5db;
+            --muted: #6b7280;
+            --button-bg: #f9fafb;
+            --button-hover: #f3f4f6;
+            --error: #b42318;
+            --shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 48px 20px;
+        }
+
+        .page-shell {
+            width: min(100%, 760px);
+        }
+
+        .app-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 36px 32px;
+            text-align: center;
+        }
+
+        h1,
+        h3,
+        h4 {
+            color: var(--text-strong);
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: clamp(2rem, 4vw, 2.6rem);
+            font-weight: 600;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        h4 {
+            margin-bottom: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .intro {
+            max-width: 520px;
+            margin: 0 auto 28px;
+            color: var(--muted);
         }
 
         .form-actions {
             display: flex;
-            align-items: end;
-            gap: 16px;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 28px;
         }
 
         .form-actions label {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        input[type="number"] {
+            width: 88px;
+            padding: 10px 12px;
+            border: 1px solid var(--border-strong);
+            border-radius: 12px;
+            text-align: center;
+            font: inherit;
+            color: var(--text-strong);
+            background: #fff;
+        }
+
+        button,
+        .secondary-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 16px;
+            border: 1px solid var(--border-strong);
+            border-radius: 999px;
+            color: var(--text-strong);
+            text-decoration: none;
+            background: var(--button-bg);
+            font: inherit;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        button:hover,
+        .secondary-link:hover {
+            background: var(--button-hover);
+            border-color: #c7cdd6;
+        }
+
+        .selection-note,
+        .loading-message {
+            margin: 0 auto 20px;
+            max-width: 520px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .selection-note.is-error,
+        .error-message {
+            color: var(--error);
         }
 
         .character-columns {
             display: grid;
-            gap: 24px;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            margin-top: 16px;
+            justify-content: center;
+            margin-top: 18px;
         }
 
-        .character-column {
-            border: 1px solid #d0d7de;
-            border-radius: 8px;
-            padding: 16px;
-            background: #f8fafc;
-        }
-
-        .character-column h4 {
-            margin: 0;
+        .character-column,
+        .result-card {
+            width: min(100%, 520px);
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+            background: #fcfcfc;
+            text-align: left;
         }
 
         .character-column-header {
@@ -45,120 +167,156 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+        }
+
+        .character-list {
+            text-align: left;
         }
 
         .character-list label {
-            display: block;
-            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            line-height: 1.5;
         }
 
         .character-list.is-scrollable {
-            max-height: 320px;
+            max-height: 360px;
             overflow-y: auto;
             padding-right: 8px;
         }
 
-        .selection-note {
-            margin: 8px 0 0;
-            color: #57606a;
-            font-size: 0.95rem;
+        .character-list.is-scrollable::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .selection-note.is-error {
-            color: #b42318;
+        .character-list.is-scrollable::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 999px;
         }
 
-        .secondary-link {
-            display: inline-flex;
-            align-items: center;
+        .result-card h3 {
+            text-align: center;
+        }
+
+        .sentence-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+        }
+
+        .sentence-list li {
+            border-top: 1px solid var(--border);
+            padding: 14px 0;
+        }
+
+        .sentence-list li:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .sentence-chinese {
+            color: var(--text-strong);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .sentence-meta {
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+
+        .result-actions {
+            display: flex;
             justify-content: center;
-            padding: 10px 14px;
-            border: 1px solid #d0d7de;
-            border-radius: 8px;
-            color: inherit;
-            text-decoration: none;
-            background: #f8fafc;
         }
 
         .is-hidden {
             display: none;
         }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 24px 14px;
+            }
+
+            .app-card {
+                padding: 28px 18px;
+            }
+
+            .character-column-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .character-column,
+            .result-card {
+                padding: 18px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<h1>Mandarin Sentence Generator</h1>
+<main class="page-shell">
+    <section class="app-card">
+        <h1>Mandarin Sentence Generator</h1>
+        <p class="intro">Pick a few new characters and generate simple practice sentences using only the characters you already know.</p>
 
-<form 
-    hx-post="/generate-ui" 
-    hx-target="#result-panel" 
-    hx-swap="innerHTML"
->
-    <div class="form-actions">
-        <label>
-            Number of sentences:
-            <input type="number" name="n_sentences" value="2" min="1" max="5">
-        </label>
+        <form
+            hx-post="/generate-ui"
+            hx-target="#result-panel"
+            hx-swap="innerHTML"
+        >
+            <div class="form-actions">
+                <label>
+                    Number of sentences
+                    <input type="number" name="n_sentences" value="2" min="1" max="5">
+                </label>
 
-        <button type="submit">Generate</button>
-        <a class="secondary-link" href="/known-characters">汉子 you already know</a>
-    </div>
+                <a class="secondary-link" href="/known-characters">汉子 you already know</a>
+            </div>
 
-    <div id="selection-panel">
-        <h3>Select Characters:</h3>
-        <p id="selection-note" class="selection-note">
-            Choose up to {{ max_selected_characters }} new characters.
-        </p>
+            <div id="selection-panel">
+                <h3>Select Characters</h3>
+                <p id="selection-note" class="selection-note">
+                    Choose up to {{ max_selected_characters }} new characters.
+                </p>
 
-        <!-- Character List -->
-        <div id="character-list" class="character-columns">
-            <section class="character-column">
-                <div class="character-column-header">
-                    <h4>New Characters</h4>
-                    <button type="button" onclick="toggleGroup('new-characters')">Toggle New</button>
+                <div id="character-list" class="character-columns">
+                    <section class="character-column">
+                        <div class="character-column-header">
+                            <h4>New Characters</h4>
+                            <button type="submit">Generate</button>
+                        </div>
+                        <div id="new-characters" class="character-list is-scrollable">
+                            {% for char in new_characters %}
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="character_ids"
+                                        value="{{ char.id }}"
+                                        data-character-checkbox
+                                    >
+                                    <span>{{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </section>
                 </div>
-                <div id="new-characters" class="character-list is-scrollable">
-                    {% for char in new_characters %}
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="character_ids"
-                                value="{{ char.id }}"
-                                data-character-checkbox
-                            >
-                            {{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}
-                        </label>
-                    {% endfor %}
-                </div>
-            </section>
-        </div>
-    </div>
+            </div>
 
-    <div id="result-panel" class="is-hidden"></div>
-</form>
+            <div id="result-panel" class="is-hidden"></div>
+        </form>
+    </section>
+</main>
 
-<!-- JavaScript -->
 <script>
 const maxSelectedCharacters = {{ max_selected_characters }};
 let loadingMessageTimeoutId = null;
-
-function toggleGroup(groupId) {
-    const checkboxes = Array.from(
-        document.querySelectorAll(`#${groupId} input[type="checkbox"]`)
-    );
-    const shouldSelect = checkboxes.some(cb => !cb.checked && !cb.disabled);
-
-    checkboxes.forEach(cb => {
-        if (shouldSelect && getSelectedCount() >= maxSelectedCharacters) {
-            return;
-        }
-
-        cb.checked = shouldSelect;
-    });
-
-    syncCharacterSelectionState();
-}
 
 function getCharacterCheckboxes() {
     return Array.from(document.querySelectorAll("[data-character-checkbox]"));
@@ -187,7 +345,7 @@ function showLoadingState() {
     const resultPanel = document.getElementById("result-panel");
     document.getElementById("selection-panel").classList.add("is-hidden");
     resultPanel.classList.remove("is-hidden");
-    resultPanel.innerHTML = "<p>Just a moment...</p>";
+    resultPanel.innerHTML = "<p class=\"loading-message\">Just a moment...</p>";
 
     if (loadingMessageTimeoutId) {
         clearTimeout(loadingMessageTimeoutId);
@@ -195,7 +353,7 @@ function showLoadingState() {
 
     loadingMessageTimeoutId = window.setTimeout(() => {
         if (!resultPanel.classList.contains("is-hidden")) {
-            resultPanel.innerHTML = "<p>Still working...</p>";
+            resultPanel.innerHTML = "<p class=\"loading-message\">Still working...</p>";
         }
     }, 5000);
 }

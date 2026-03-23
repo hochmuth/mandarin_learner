@@ -3,45 +3,141 @@
 <head>
     <title>Known Characters</title>
     <style>
+        :root {
+            --bg: #ffffff;
+            --panel: #ffffff;
+            --text: #4b5563;
+            --text-strong: #1f2937;
+            --border: #e5e7eb;
+            --border-strong: #d1d5db;
+            --button-bg: #f9fafb;
+            --button-hover: #f3f4f6;
+            --shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 48px 20px;
+        }
+
+        .page-shell {
+            width: min(100%, 760px);
+        }
+
+        .page-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 36px 32px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            color: var(--text-strong);
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0 auto 28px;
+            max-width: 520px;
+            line-height: 1.6;
         }
 
         .page-actions {
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
         }
 
         .back-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 14px;
-            border: 1px solid #d0d7de;
-            border-radius: 8px;
-            color: inherit;
+            min-height: 44px;
+            padding: 10px 16px;
+            border: 1px solid var(--border-strong);
+            border-radius: 999px;
+            color: var(--text-strong);
             text-decoration: none;
-            background: #f8fafc;
+            background: var(--button-bg);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: var(--button-hover);
+            border-color: #c7cdd6;
+        }
+
+        .character-card {
+            width: min(100%, 520px);
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+            background: #fcfcfc;
+            text-align: left;
+        }
+
+        .character-list {
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 8px;
         }
 
         .character-list label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 24px 14px;
+            }
+
+            .page-card {
+                padding: 28px 18px;
+            }
+
+            .character-card {
+                padding: 18px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="page-actions">
-    <a class="back-link" href="/">Back to home page</a>
-</div>
+<main class="page-shell">
+    <section class="page-card">
+        <div class="page-actions">
+            <a class="back-link" href="/">Back to home page</a>
+        </div>
 
-<h1>汉子 you already know</h1>
+        <h1>汉子 you already know</h1>
+        <p>Your current known-character list lives here, separated from the generator so the main screen stays calm and focused.</p>
 
-<div class="character-list">
-    {% for char in known_characters %}
-        <label>{{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}</label>
-    {% endfor %}
-</div>
+        <div class="character-card">
+            <div class="character-list">
+                {% for char in known_characters %}
+                    <label>{{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}</label>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
 
 </body>
 </html>
