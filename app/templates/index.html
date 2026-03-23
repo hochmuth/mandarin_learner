@@ -141,6 +141,7 @@
 <!-- JavaScript -->
 <script>
 const maxSelectedCharacters = {{ max_selected_characters }};
+let loadingMessageTimeoutId = null;
 
 function toggleGroup(groupId) {
     const checkboxes = Array.from(
@@ -182,6 +183,23 @@ function showSelectionPanel() {
     resetCharacterSelection();
 }
 
+function showLoadingState() {
+    const resultPanel = document.getElementById("result-panel");
+    document.getElementById("selection-panel").classList.add("is-hidden");
+    resultPanel.classList.remove("is-hidden");
+    resultPanel.innerHTML = "<p>Just a moment...</p>";
+
+    if (loadingMessageTimeoutId) {
+        clearTimeout(loadingMessageTimeoutId);
+    }
+
+    loadingMessageTimeoutId = window.setTimeout(() => {
+        if (!resultPanel.classList.contains("is-hidden")) {
+            resultPanel.innerHTML = "<p>Still working...</p>";
+        }
+    }, 5000);
+}
+
 function syncCharacterSelectionState() {
     const selectedCount = getSelectedCount();
     const selectionNote = document.getElementById("selection-note");
@@ -207,9 +225,22 @@ document.body.addEventListener("click", event => {
     showSelectionPanel();
 });
 
+document.body.addEventListener("htmx:beforeRequest", event => {
+    if (event.detail.target.id !== "result-panel") {
+        return;
+    }
+
+    showLoadingState();
+});
+
 document.body.addEventListener("htmx:afterSwap", event => {
     if (event.detail.target.id !== "result-panel") {
         return;
+    }
+
+    if (loadingMessageTimeoutId) {
+        clearTimeout(loadingMessageTimeoutId);
+        loadingMessageTimeoutId = null;
     }
 
     document.getElementById("selection-panel").classList.add("is-hidden");
