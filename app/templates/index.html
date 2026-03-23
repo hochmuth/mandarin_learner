@@ -80,6 +80,10 @@
             text-decoration: none;
             background: #f8fafc;
         }
+
+        .is-hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -88,7 +92,7 @@
 
 <form 
     hx-post="/generate-ui" 
-    hx-target="#result" 
+    hx-target="#result-panel" 
     hx-swap="innerHTML"
 >
     <div class="form-actions">
@@ -101,40 +105,38 @@
         <a class="secondary-link" href="/known-characters">汉子 you already know</a>
     </div>
 
-    <h3>Select Characters:</h3>
-    <p id="selection-note" class="selection-note">
-        Choose up to {{ max_selected_characters }} new characters.
-    </p>
+    <div id="selection-panel">
+        <h3>Select Characters:</h3>
+        <p id="selection-note" class="selection-note">
+            Choose up to {{ max_selected_characters }} new characters.
+        </p>
 
-    <!-- Character List -->
-    <div id="character-list" class="character-columns">
-        <section class="character-column">
-            <div class="character-column-header">
-                <h4>New Characters</h4>
-                <button type="button" onclick="toggleGroup('new-characters')">Toggle New</button>
-            </div>
-            <div id="new-characters" class="character-list is-scrollable">
-                {% for char in new_characters %}
-                    <label>
-                        <input
-                            type="checkbox"
-                            name="character_ids"
-                            value="{{ char.id }}"
-                            data-character-checkbox
-                        >
-                        {{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}
-                    </label>
-                {% endfor %}
-            </div>
-        </section>
-
+        <!-- Character List -->
+        <div id="character-list" class="character-columns">
+            <section class="character-column">
+                <div class="character-column-header">
+                    <h4>New Characters</h4>
+                    <button type="button" onclick="toggleGroup('new-characters')">Toggle New</button>
+                </div>
+                <div id="new-characters" class="character-list is-scrollable">
+                    {% for char in new_characters %}
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="character_ids"
+                                value="{{ char.id }}"
+                                data-character-checkbox
+                            >
+                            {{ char.character }} ({{ char.pinyin }}) - {{ char.meaning }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
     </div>
+
+    <div id="result-panel" class="is-hidden"></div>
 </form>
-
-<hr>
-
-<!-- Result Area -->
-<div id="result"></div>
 
 <!-- JavaScript -->
 <script>
@@ -165,6 +167,21 @@ function getSelectedCount() {
     return getCharacterCheckboxes().filter(cb => cb.checked).length;
 }
 
+function resetCharacterSelection() {
+    getCharacterCheckboxes().forEach(cb => {
+        cb.checked = false;
+        cb.disabled = false;
+    });
+    syncCharacterSelectionState();
+}
+
+function showSelectionPanel() {
+    document.getElementById("selection-panel").classList.remove("is-hidden");
+    document.getElementById("result-panel").classList.add("is-hidden");
+    document.getElementById("result-panel").innerHTML = "";
+    resetCharacterSelection();
+}
+
 function syncCharacterSelectionState() {
     const selectedCount = getSelectedCount();
     const selectionNote = document.getElementById("selection-note");
@@ -180,6 +197,23 @@ function syncCharacterSelectionState() {
 
 getCharacterCheckboxes().forEach(cb => {
     cb.addEventListener("change", syncCharacterSelectionState);
+});
+
+document.body.addEventListener("click", event => {
+    if (!event.target.closest("[data-select-another]")) {
+        return;
+    }
+
+    showSelectionPanel();
+});
+
+document.body.addEventListener("htmx:afterSwap", event => {
+    if (event.detail.target.id !== "result-panel") {
+        return;
+    }
+
+    document.getElementById("selection-panel").classList.add("is-hidden");
+    document.getElementById("result-panel").classList.remove("is-hidden");
 });
 
 syncCharacterSelectionState();
