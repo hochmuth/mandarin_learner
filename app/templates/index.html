@@ -259,7 +259,7 @@
         }
     </style>
 </head>
-<body>
+<body data-max-selected-characters="{{ max_selected_characters }}">
 
 <main class="page-shell">
     <section class="app-card">
@@ -315,7 +315,7 @@
 </main>
 
 <script>
-const maxSelectedCharacters = {{ max_selected_characters }};
+const maxSelectedCharacters = Number(document.body.dataset.maxSelectedCharacters);
 let loadingMessageTimeoutId = null;
 
 function getCharacterCheckboxes() {
