@@ -13,8 +13,18 @@
         {% for s in result.sentences %}
             <li>
                 <div class="sentence-chinese">{{ s.chinese }}</div>
-                <div class="sentence-meta">{{ s.pinyin }}</div>
-                <div>{{ s.english }}</div>
+                <div class="sentence-reveal">
+                    <button type="button" class="sentence-reveal-button" data-reveal-target=".sentence-pinyin">Show pinyin</button>
+                    <div class="sentence-reveal-content">
+                        <div class="sentence-meta sentence-pinyin is-hidden">{{ s.pinyin }}</div>
+                    </div>
+                </div>
+                <div class="sentence-reveal">
+                    <button type="button" class="sentence-reveal-button" data-reveal-target=".sentence-translation">Show translation</button>
+                    <div class="sentence-reveal-content">
+                        <div class="sentence-translation is-hidden">{{ s.english }}</div>
+                    </div>
+                </div>
             </li>
         {% endfor %}
     </ul>

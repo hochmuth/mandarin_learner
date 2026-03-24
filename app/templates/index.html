@@ -229,6 +229,26 @@
             margin-bottom: 2px;
         }
 
+        .sentence-reveal {
+            margin-top: 10px;
+        }
+
+        .sentence-reveal-button {
+            min-height: 36px;
+            padding: 8px 14px;
+            color: var(--text-strong);
+            font-size: 0.95rem;
+        }
+
+        .sentence-reveal-value.is-hidden {
+            display: none;
+        }
+
+        .sentence-reveal-content {
+            margin-top: 4px;
+            color: var(--muted);
+        }
+
         .result-actions {
             display: flex;
             justify-content: center;
@@ -376,6 +396,19 @@ getCharacterCheckboxes().forEach(cb => {
 });
 
 document.body.addEventListener("click", event => {
+    const revealButton = event.target.closest("[data-reveal-target]");
+    if (revealButton) {
+        const selector = revealButton.dataset.revealTarget;
+        const revealValue = revealButton.parentElement.querySelector(selector);
+
+        if (revealValue) {
+            revealButton.remove();
+            revealValue.classList.remove("is-hidden");
+        }
+
+        return;
+    }
+
     if (!event.target.closest("[data-select-another]")) {
         return;
     }
