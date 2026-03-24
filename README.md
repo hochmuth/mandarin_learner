@@ -13,3 +13,4 @@ uv run python -m app.seed
 uv run python -m app.seed app/data/characters_hsk1.csv
 
 # TO DO
+- Gen sentences are often very similar - not good

@@ -219,7 +219,7 @@
 
         .sentence-chinese {
             color: var(--text-strong);
-            font-size: 1.1rem;
+            font-size: 1.75rem;
             font-weight: 600;
             margin-bottom: 4px;
         }
@@ -284,14 +284,14 @@
 <main class="page-shell">
     <section class="app-card">
         <h1>Mandarin Sentence Generator</h1>
-        <p class="intro">Practice characters you're trying to learn in real-life context.</p>
+        <p class="intro">Practice characters you're trying to learn in full sentence context.</p>
 
         <form
             hx-post="/generate-ui"
             hx-target="#result-panel"
             hx-swap="innerHTML"
         >
-            <div class="form-actions">
+            <div id="home-actions" class="form-actions">
                 <label>
                     Number of sentences
                     <input type="number" name="n_sentences" value="3" min="1" max="5">
@@ -336,7 +336,13 @@
 
 <script>
 const maxSelectedCharacters = Number(document.body.dataset.maxSelectedCharacters);
-let loadingMessageTimeoutId = null;
+const loadingMessages = [
+    "Just a moment...",
+    "Still working...",
+    "耐心是一种美德",
+    "This is taking forever, isn't it",
+];
+let loadingMessageIntervalId = null;
 
 function getCharacterCheckboxes() {
     return Array.from(document.querySelectorAll("[data-character-checkbox]"));
@@ -355,6 +361,7 @@ function resetCharacterSelection() {
 }
 
 function showSelectionPanel() {
+    document.getElementById("home-actions").classList.remove("is-hidden");
     document.getElementById("selection-panel").classList.remove("is-hidden");
     document.getElementById("result-panel").classList.add("is-hidden");
     document.getElementById("result-panel").innerHTML = "";
@@ -363,19 +370,24 @@ function showSelectionPanel() {
 
 function showLoadingState() {
     const resultPanel = document.getElementById("result-panel");
+    document.getElementById("home-actions").classList.add("is-hidden");
     document.getElementById("selection-panel").classList.add("is-hidden");
     resultPanel.classList.remove("is-hidden");
-    resultPanel.innerHTML = "<p class=\"loading-message\">Just a moment...</p>";
+    resultPanel.innerHTML = `<p class="loading-message">${loadingMessages[0]}</p>`;
 
-    if (loadingMessageTimeoutId) {
-        clearTimeout(loadingMessageTimeoutId);
+    if (loadingMessageIntervalId) {
+        clearInterval(loadingMessageIntervalId);
     }
 
-    loadingMessageTimeoutId = window.setTimeout(() => {
-        if (!resultPanel.classList.contains("is-hidden")) {
-            resultPanel.innerHTML = "<p class=\"loading-message\">Still working...</p>";
+    let loadingMessageIndex = 1;
+    loadingMessageIntervalId = window.setInterval(() => {
+        if (resultPanel.classList.contains("is-hidden")) {
+            return;
         }
-    }, 5000);
+
+        resultPanel.innerHTML = `<p class="loading-message">${loadingMessages[loadingMessageIndex]}</p>`;
+        loadingMessageIndex = (loadingMessageIndex + 1) % loadingMessages.length;
+    }, 3000);
 }
 
 function syncCharacterSelectionState() {
@@ -429,9 +441,9 @@ document.body.addEventListener("htmx:afterSwap", event => {
         return;
     }
 
-    if (loadingMessageTimeoutId) {
-        clearTimeout(loadingMessageTimeoutId);
-        loadingMessageTimeoutId = null;
+    if (loadingMessageIntervalId) {
+        clearInterval(loadingMessageIntervalId);
+        loadingMessageIntervalId = null;
     }
 
     document.getElementById("selection-panel").classList.add("is-hidden");
