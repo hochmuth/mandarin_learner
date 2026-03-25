@@ -301,7 +301,7 @@
             </div>
 
             <div id="selection-panel">
-                <h3>Select Characters</h3>
+                <h3>Select a character or a word you want to practice</h3>
                 <p id="selection-note" class="selection-note">
                     Choose up to {{ max_selected_characters }} new characters.
                 </p>
@@ -399,7 +399,7 @@ function syncCharacterSelectionState() {
         cb.disabled = reachedLimit && !cb.checked;
     });
 
-    selectionNote.textContent = `Selected ${selectedCount} of max ${maxSelectedCharacters} characters you want to practice.`;
+    selectionNote.textContent = `Selected ${selectedCount} of max ${maxSelectedCharacters} characters.`;
     selectionNote.classList.toggle("is-error", reachedLimit);
 }
 
