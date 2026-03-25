@@ -10,6 +10,7 @@ Rules:
 - Do NOT use any other Chinese characters
 - Write {n_sentences} short sentences
 - Keep grammar simple
+- Try to make each sentence unique; avoid repetition
 
 Output format:
 Return ONLY valid JSON (no explanation, no extra text)
