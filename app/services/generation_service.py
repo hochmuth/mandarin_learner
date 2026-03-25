@@ -1,11 +1,15 @@
 import json
 import os
 from functools import lru_cache
+from pathlib import Path
 
 from app.config import GENERATION_MAX_ATTEMPTS, GENERATION_MODEL
 from openai import OpenAI
 
 from app.services.validator import validate_sentences
+
+PROMPTS_DIR = Path(__file__).resolve().parents[1] / "prompts"
+GENERATION_PROMPT_PATH = PROMPTS_DIR / "generation_prompt.txt"
 
 def _noop_observe(*args, **kwargs):
     def decorator(func):
@@ -47,6 +51,11 @@ def _get_generation_runtime():
     return OpenAI(api_key=os.getenv("OPENAI_API_KEY")), _noop_observe
 
 
+@lru_cache(maxsize=1)
+def _load_generation_prompt_template() -> str:
+    return GENERATION_PROMPT_PATH.read_text(encoding="utf-8")
+
+
 def build_prompt(
         characters_required: list[str],
         characters_optional: list[str],
@@ -55,33 +64,11 @@ def build_prompt(
         invalid_chars=None) -> str:
     char_string_required = " ".join(characters_required)
     char_string_optional = " ".join(characters_optional)
-
-    prompt = f"""
-You are helping a beginner learn Mandarin Chinese.
-
-You MUST use characters from this exact list:
-{char_string_required}
-
-You can also use any of these additional characters:
-{char_string_optional}
-
-Rules:
-- Do NOT use any other Chinese characters
-- Write {n_sentences} short sentences
-- Keep grammar simple
-
-Output format:
-Return ONLY valid JSON (no explanation, no extra text)
-
-Example format:
-[
-  {{
-    "chinese": "我喝水。",
-    "pinyin": "wǒ hē shuǐ",
-    "english": "I drink water."
-  }}
-]
-"""
+    prompt = _load_generation_prompt_template().format(
+        char_string_required=char_string_required,
+        char_string_optional=char_string_optional,
+        n_sentences=n_sentences,
+    )
 
     if strict:
         prompt += "\nSTRICT MODE:\n"
