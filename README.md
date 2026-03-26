@@ -1,46 +1,59 @@
 # mandarin_learner
 
 ## Purpose
-When learning new characters in Mandarin, one common hurdle is that one character can be used in different context (or even be part of different words). It is therefore very helpful to see the character in a variety of different contexts. The goal of this small POC is to help with just that - it doesn't pretend to be a full-scale learning app or anything of the sort. It is nothing but a simple LLM wrapper focused on generating Mandarin sentences that will include a character that the user is trying to learn.
+When learning new characters in Mandarin, one common hurdle is that one character can have multiple meanings (or even be part of very different words). It is therefore helpful to see the character in a variety of different contexts. The goal of this small POC is to help with exactly that - no less and no more. Under the hood, it is nothing but a simple LLM wrapper focused on generating Mandarin sentences for a character that the user is trying to learn.
 
 ### How do I use this?
-There is a list of characters that the user is trying to learn. Out of these you can pick 1-3 (as some words consist of multiple characters) and the LLM will return a few example sentences that you can then either try to translate on your own or see their English translation and pinyin transcription.
+There is a list of characters that the user is trying to learn. Out of these you can pick 1-3 (as some words consist of multiple characters) and the LLM will return a few example sentences that you can then either try to translate on your own or see their English translation as well as the pinyin transcription.
 
 ### What are the limitations?
-At this stage, there are many. But most importantly - the app only uses a small subset of about 150 HSK 1 characters. Some of these are hardcoded as "already learned" (=the LLM can freely use them to generate sentences), while others are "new" - those are the ones the LLM will be generating sample sentences for. Currently there is no possibility of moving characters between these two groups or adding new characters.
+At this stage, there are many. Most importantly - the app only uses a small subset of about 150 HSK 1 characters. Some of these are hardcoded as "already learned" (=the LLM can freely use them to generate sentences), while others are "new" - those are the ones you can select for sentence generation. Currently there is no possibility of moving characters between these two groups or adding new characters.
+
+### Does this use simplified or traditional characters?
+Simplified.
 
 ### But do we need an LLM for this? Wouldn't a simple sentence library be enough?
-The problem with a static library of sentences is that once the learner reads through them once or twice, it doesn't serve as a useful learning tool anymore. It's much better to see a fresh set of practice sentences every time we're facing the challenge of learning a particularly difficult character. The LLMs can be useful for this.
+The problem with a static library of sentences is that once the learner reads through them once or twice, it doesn't serve as a useful learning tool anymore. It's much better to see a fresh set of practice sentences every time we're learning or reviewing. LLMs can be useful for this.
 
 ## Installation instructions
 
 This project uses [`uv`](https://docs.astral.sh/uv/) for dependency management.
-It was tested on Python 3.13
+It was tested on Python 3.13.
 
 1. Install `uv` if you do not have it yet:
+   
    `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
 2. Clone the repository and move into it:
-   `git clone <your-repo-url>`
-   `cd mandarin_learner`
+   
+   `git clone <your-repo-url>`, then `cd mandarin_learner`
 
-3. Create the virtual environment and install dependencies from `pyproject.toml` / `uv.lock`:
-   `uv sync`
+3. Create the virtual environment and install dependencies:
+    
+    `uv sync`
 
-4. The project requires OpenAI API key. However, under normal conditions the token count should be low. (Running several dozen test requests approximated to about 1$.) 
-Optionally, the project also uses LangFuse for tracing. LangFuse offers a free tier which is more than adequate for testing. (It is possible to run the project without LangFuse but tracing will not work.)
-API keys should be set in the `.env` file in the project root, for example:
-   `OPENAI_API_KEY=...`
-   `LANGFUSE_PUBLIC_KEY=...`
-   `LANGFUSE_SECRET_KEY=...`
-   `LANGFUSE_HOST=...`
+4. The project requires an OpenAI API key. However, under normal conditions the token count should be low. (For example, running several dozen test requests approximated to about 1$.) 
+
+Optionally, the project also uses [LangFuse](https://langfuse.com/) for API call tracing. LangFuse offers a free tier which is more than adequate for testing. It is also possible to run the project without LangFuse but tracing will not work.
+
+API keys should be set in the `.env` file in the project root:
+   ```
+   OPENAI_API_KEY=...
+   LANGFUSE_PUBLIC_KEY=...
+   LANGFUSE_SECRET_KEY=...
+   LANGFUSE_HOST=...
+   ```
 
 5. Initialize and seed the local database:
+
    `uv run python -m app.init_db`
+
    `uv run python -m app.seed app/data/characters_hsk1.csv`
 
 6. After that, you can start the app with:
+
 `uv run uvicorn app.main:app --reload`
+
 Go to http://127.0.0.1:8000/ in your browser to use the tool.
 (If you've set up LangFuse keys the trace data should start to flow automatically once you generate your first sentences.)
 
