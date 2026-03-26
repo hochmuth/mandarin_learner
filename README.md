@@ -2,11 +2,13 @@
 
 ## Purpose
 When learning new characters in Mandarin, one common hurdle is that one character can be used in different context (or even be part of different words). It is therefore very helpful to see the character in a variety of different contexts. The goal of this small POC is to help with just that - it doesn't pretend to be a full-scale learning app or anything of the sort. It is nothing but a simple LLM wrapper focused on generating Mandarin sentences that will include a character that the user is trying to learn.
+
 ### How do I use this?
 There is a list of characters that the user is trying to learn. Out of these you can pick 1-3 (as some words consist of multiple characters) and the LLM will return a few example sentences that you can then either try to translate on your own or see their English translation and pinyin transcription.
+
 ### What are the limitations?
 At this stage, there are many. But most importantly - the app only uses a small subset of about 150 HSK 1 characters. Some of these are hardcoded as "already learned" (=the LLM can freely use them to generate sentences), while others are "new" - those are the ones the LLM will be generating sample sentences for. Currently there is no possibility of moving characters between these two groups or adding new characters.
-- 
+
 ### But do we need an LLM for this? Wouldn't a simple sentence library be enough?
 The problem with a static library of sentences is that once the learner reads through them once or twice, it doesn't serve as a useful learning tool anymore. It's much better to see a fresh set of practice sentences every time we're facing the challenge of learning a particularly difficult character. The LLMs can be useful for this.
 
