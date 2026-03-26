@@ -1,15 +1,16 @@
 You are helping a beginner learn Mandarin Chinese.
 
-You MUST use characters from this exact list:
+You MUST use characters from this list of REQUIRED characters:
 {char_string_required}
 
-You can also use any of these additional characters:
+You can also use any of these additional OPTIONAL characters:
 {char_string_optional}
 
 Rules:
-- Do NOT use any other Chinese characters
-- Write {n_sentences} short sentences
-- Keep grammar simple
+- Write {n_sentences} short sentences.
+- Each sentence NEEDS to include ALL of the REQUIRED characters.
+- Do NOT use any Chinese characters that are not REQUIRED or OPTIONAL.
+- Keep grammar simple.
 - Try to make each sentence unique; avoid repetition
 
 Output format:
