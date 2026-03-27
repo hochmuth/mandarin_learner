@@ -1,6 +1,7 @@
 [generation]
 model = "gpt-5"
 max_attempts = 3
+reasoning_effort = "none"
 
 [ui]
 max_selected_characters = 3

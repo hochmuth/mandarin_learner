@@ -3,13 +3,24 @@ import os
 from functools import lru_cache
 from pathlib import Path
 
-from app.config import GENERATION_MAX_ATTEMPTS, GENERATION_MODEL
+from app.config import (
+    GENERATION_MAX_ATTEMPTS,
+    GENERATION_MODEL,
+    GENERATION_REASONING_EFFORT,
+)
 from openai import OpenAI
 
 from app.services.validator import validate_sentences
 
 PROMPTS_DIR = Path(__file__).resolve().parents[1] / "prompts"
 GENERATION_PROMPT_PATH = PROMPTS_DIR / "generation_prompt.txt"
+
+
+def _build_reasoning_kwargs() -> dict:
+    if not GENERATION_REASONING_EFFORT:
+        return {}
+
+    return {"reasoning": {"effort": GENERATION_REASONING_EFFORT}}
 
 def _noop_observe(*args, **kwargs):
     def decorator(func):
@@ -111,6 +122,7 @@ def generate_sentences(
             response = client.responses.create(
                 model=GENERATION_MODEL,
                 input=prompt,
+                **_build_reasoning_kwargs(),
                 **response_kwargs
             )
 

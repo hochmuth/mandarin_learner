@@ -12,6 +12,7 @@ DEFAULT_CONFIG_PATH = PROJECT_ROOT / "config.toml"
 class GenerationConfig:
     model: str
     max_attempts: int
+    reasoning_effort: str | None
 
 
 @dataclass(frozen=True)
@@ -55,6 +56,10 @@ def _load_config() -> AppConfig:
                 str(generation_data.get("max_attempts", 3)),
             )
         ),
+        reasoning_effort=os.getenv(
+            "GENERATION_REASONING_EFFORT",
+            generation_data.get("reasoning_effort"),
+        ),
     )
 
     loading_messages = ui_data.get(
@@ -85,6 +90,7 @@ settings = _load_config()
 
 GENERATION_MODEL = settings.generation.model
 GENERATION_MAX_ATTEMPTS = settings.generation.max_attempts
+GENERATION_REASONING_EFFORT = settings.generation.reasoning_effort
 UI_MAX_SELECTED_CHARACTERS = settings.ui.max_selected_characters
 UI_DEFAULT_SENTENCE_COUNT = settings.ui.default_sentence_count
 UI_LOADING_MESSAGE_INTERVAL_MS = settings.ui.loading_message_interval_ms
