@@ -60,6 +60,14 @@ API keys should be set in the `.env` file in the project root:
 Go to http://127.0.0.1:8000/ in your browser to use the tool.
 (If you've set up LangFuse keys the trace data should start to flow automatically once you generate your first sentences.)
 
+## Next steps
+- modularization of the LLM step so that we can easily swap model
+- streamlining evaluation in LangFuse: 
+    - rule-based accuracy metrics for character coverage
+    - LLM-judge for sentence and translation quality
+- character management (adding new characters, creating personalized lists, moving between categories)
+- user management
+
 
 ## Repo structure (high-level overview)
 
