@@ -1,7 +1,7 @@
 [generation]
-model = "gpt-5"
+model = "gpt-5-mini"
 max_attempts = 3
-reasoning_effort = "none"
+reasoning_effort = "minimal"
 
 [ui]
 max_selected_characters = 3
