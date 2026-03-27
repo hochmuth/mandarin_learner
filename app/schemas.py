@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field
+from app.config import UI_DEFAULT_SENTENCE_COUNT, UI_MAX_SELECTED_CHARACTERS
 
 class GenerationRequest(BaseModel):
-    character_ids: list[int] = Field(min_length=1, max_length=3)
-    n_sentences: int = 3
+    character_ids: list[int] = Field(min_length=1, max_length=UI_MAX_SELECTED_CHARACTERS)
+    n_sentences: int = UI_DEFAULT_SENTENCE_COUNT
 
 class SentenceResult(BaseModel):
     chinese: str

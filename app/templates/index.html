@@ -279,7 +279,10 @@
         }
     </style>
 </head>
-<body data-max-selected-characters="{{ max_selected_characters }}">
+<body
+    data-max-selected-characters="{{ max_selected_characters }}"
+    data-loading-message-interval-ms="{{ loading_message_interval_ms }}"
+>
 
 <main class="page-shell">
     <section class="app-card">
@@ -294,7 +297,7 @@
             <div id="home-actions" class="form-actions">
                 <label>
                     Number of sentences
-                    <input type="number" name="n_sentences" value="3" min="1" max="5">
+                    <input type="number" name="n_sentences" value="{{ default_sentence_count }}" min="1" max="5">
                 </label>
 
                 <a class="secondary-link" href="/known-characters">汉子 you already know</a>
@@ -334,14 +337,11 @@
     </section>
 </main>
 
+<script id="loading-messages-data" type="application/json">{{ loading_messages | tojson }}</script>
 <script>
 const maxSelectedCharacters = Number(document.body.dataset.maxSelectedCharacters);
-const loadingMessages = [
-    "Just a moment...",
-    "Still working...",
-    "耐心是一种美德",
-    "This is taking forever, isn't it",
-];
+const loadingMessageIntervalMs = Number(document.body.dataset.loadingMessageIntervalMs);
+const loadingMessages = JSON.parse(document.getElementById("loading-messages-data").textContent);
 let loadingMessageIntervalId = null;
 
 function getCharacterCheckboxes() {
@@ -387,7 +387,7 @@ function showLoadingState() {
 
         resultPanel.innerHTML = `<p class="loading-message">${loadingMessages[loadingMessageIndex]}</p>`;
         loadingMessageIndex = (loadingMessageIndex + 1) % loadingMessages.length;
-    }, 3000);
+    }, loadingMessageIntervalMs);
 }
 
 function syncCharacterSelectionState() {

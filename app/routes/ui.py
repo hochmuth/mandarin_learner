@@ -4,13 +4,18 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from sqlmodel import Session, select
 
+from app.config import (
+    UI_DEFAULT_SENTENCE_COUNT,
+    UI_LOADING_MESSAGE_INTERVAL_MS,
+    UI_LOADING_MESSAGES,
+    UI_MAX_SELECTED_CHARACTERS,
+)
 from app.database import get_session
 from app.models import Character
 from app.services.vocabulary_service import get_characters_by_status
 from app.services.generation_service import generate_sentences
 
 router = APIRouter()
-MAX_SELECTED_CHARACTERS = 3
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -25,7 +30,10 @@ def index(request: Request, session: Session = Depends(get_session)):
         {
             "request": request,
             "new_characters": new_characters,
-            "max_selected_characters": MAX_SELECTED_CHARACTERS,
+            "max_selected_characters": UI_MAX_SELECTED_CHARACTERS,
+            "default_sentence_count": UI_DEFAULT_SENTENCE_COUNT,
+            "loading_messages": list(UI_LOADING_MESSAGES),
+            "loading_message_interval_ms": UI_LOADING_MESSAGE_INTERVAL_MS,
         }
     )
 
@@ -48,7 +56,7 @@ def known_characters_page(request: Request, session: Session = Depends(get_sessi
 def generate_ui(
     request: Request,
     character_ids: list[int] | None = Form(None),
-    n_sentences: int = Form(2),
+    n_sentences: int = Form(UI_DEFAULT_SENTENCE_COUNT),
     session: Session = Depends(get_session)
 ):
     if not character_ids:
@@ -62,14 +70,14 @@ def generate_ui(
             }
         )
 
-    if len(character_ids) > MAX_SELECTED_CHARACTERS:
+    if len(character_ids) > UI_MAX_SELECTED_CHARACTERS:
         return templates.TemplateResponse(
             "result.html",
             {
                 "request": request,
                 "result": {"valid": False, "attempts": 0},
                 "characters": [],
-                "error_message": f"Select at most {MAX_SELECTED_CHARACTERS} new characters.",
+                "error_message": f"Select at most {UI_MAX_SELECTED_CHARACTERS} new characters.",
             }
         )
 

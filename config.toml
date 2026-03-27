@@ -1,0 +1,14 @@
+[generation]
+model = "gpt-5"
+max_attempts = 3
+
+[ui]
+max_selected_characters = 3
+default_sentence_count = 3
+loading_message_interval_ms = 3000
+loading_messages = [
+  "Just a moment...",
+  "Still working...",
+  "耐心是一种美德",
+  "This is taking forever, isn't it",
+]

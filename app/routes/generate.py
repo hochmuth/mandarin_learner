@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
+from app.config import UI_MAX_SELECTED_CHARACTERS
 from app.schemas import GenerationRequest
 from app.database import get_session
 from app.services.vocabulary_service import (
@@ -10,7 +11,6 @@ from app.services.vocabulary_service import (
 from app.services.generation_service import generate_sentences
 
 router = APIRouter()
-MAX_SELECTED_CHARACTERS = 3
 
 
 @router.post("/generate")
@@ -18,8 +18,8 @@ def generate(
     req: GenerationRequest,
     session: Session = Depends(get_session)
 ):
-    if len(req.character_ids) > MAX_SELECTED_CHARACTERS:
-        return {"error": f"Select at most {MAX_SELECTED_CHARACTERS} characters"}
+    if len(req.character_ids) > UI_MAX_SELECTED_CHARACTERS:
+        return {"error": f"Select at most {UI_MAX_SELECTED_CHARACTERS} characters"}
 
     # Step 1: fetch characters from DB
     db_characters = get_characters_by_ids(session, req.character_ids)

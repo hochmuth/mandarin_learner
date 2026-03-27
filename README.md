@@ -44,13 +44,16 @@ API keys should be set in the `.env` file in the project root:
    LANGFUSE_HOST=...
    ```
 
-5. Initialize and seed the local database:
+5. Optional file-based settings live in `config.toml`.
+   This is where you can change things like the generation model, retry count, default sentence count, character selection limit, or loading messages.
+
+6. Initialize and seed the local database:
 
    `uv run python -m app.init_db`
 
    `uv run python -m app.seed app/data/characters_hsk1.csv`
 
-6. After that, you can start the app with:
+7. After that, you can start the app with:
 
 `uv run uvicorn app.main:app --reload`
 
